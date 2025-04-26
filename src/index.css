@@ -124,6 +124,7 @@ body {
   font-size: 0.9rem;
 }
 
+
 /* Адаптивність */
 @media (max-width: 768px) {
   .movie-list {
