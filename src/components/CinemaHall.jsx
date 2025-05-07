@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import BookingService from '../services/BookingService';
 
 const CinemaHall = ({ movieId, onSeatSelect }) => {
+  // Кількість рядів і місць у залі
   const rows = 8;
   const seatsPerRow = 12;
   
@@ -8,27 +10,55 @@ const CinemaHall = ({ movieId, onSeatSelect }) => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [bookedSeats, setBookedSeats] = useState([]);
   
+  // При першому рендері завантажуємо заброньовані місця з BookingService
   useEffect(() => {
-    const mockBookedSeats = [
-      { row: 2, seat: 3 },
-      { row: 2, seat: 4 },
-      { row: 5, seat: 8 },
-      { row: 5, seat: 9 },
-      { row: 7, seat: 1 },
-      { row: 7, seat: 2 },
-      { row: 3, seat: 10 },
-      { row: 3, seat: 11 }
-    ];
+    // Отримуємо заброньовані місця з localStorage через BookingService
+    const fetchBookedSeats = () => {
+      try {
+        const bookings = BookingService.getBookedSeatsByMovieId(movieId);
+        if (bookings && bookings.length > 0) {
+          setBookedSeats(bookings);
+        } else {
+          const mockBookedSeats = [
+            { row: 2, seat: 3 },
+            { row: 2, seat: 4 },
+            { row: 5, seat: 8 },
+            { row: 5, seat: 9 },
+            { row: 7, seat: 1 },
+            { row: 7, seat: 2 },
+            { row: 3, seat: 10 },
+            { row: 3, seat: 11 }
+          ];
+          setBookedSeats(mockBookedSeats);
+        }
+      } catch (error) {
+        console.error('Помилка при отриманні заброньованих місць:', error);
+        // Встановлюємо тестові дані у випадку помилки
+        const mockBookedSeats = [
+          { row: 2, seat: 3 },
+          { row: 2, seat: 4 },
+          { row: 5, seat: 8 },
+          { row: 5, seat: 9 },
+          { row: 7, seat: 1 },
+          { row: 7, seat: 2 },
+          { row: 3, seat: 10 },
+          { row: 3, seat: 11 }
+        ];
+        setBookedSeats(mockBookedSeats);
+      }
+    };
     
-    setBookedSeats(mockBookedSeats);
+    fetchBookedSeats();
   }, [movieId]);
   
   // Обробка кліку на місце
   const handleSeatClick = (row, seat) => {
+    // Перевіряємо, чи місце заброньоване
     const isBooked = bookedSeats.some(
       bookedSeat => bookedSeat.row === row && bookedSeat.seat === seat
     );
-    if (isBooked) return;
+    
+    if (isBooked) return; // Якщо заброньоване, нічого не робимо
     
     // Перевіряємо, чи місце вже вибране
     const seatIndex = selectedSeats.findIndex(
