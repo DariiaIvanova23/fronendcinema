@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 const CinemaHall = ({ movieId, onSeatSelect }) => {
-  // Кількість рядів і місць у залі
   const rows = 8;
   const seatsPerRow = 12;
   
@@ -9,10 +8,7 @@ const CinemaHall = ({ movieId, onSeatSelect }) => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [bookedSeats, setBookedSeats] = useState([]);
   
-  // При першому рендері імітуємо певні місця як заброньовані
   useEffect(() => {
-    // Імітуємо завантаження даних з сервера (заброньовані місця)
-    // В майбутньому ці дані будуть приходити з BookingService
     const mockBookedSeats = [
       { row: 2, seat: 3 },
       { row: 2, seat: 4 },
@@ -29,12 +25,10 @@ const CinemaHall = ({ movieId, onSeatSelect }) => {
   
   // Обробка кліку на місце
   const handleSeatClick = (row, seat) => {
-    // Перевіряємо, чи місце заброньоване
     const isBooked = bookedSeats.some(
       bookedSeat => bookedSeat.row === row && bookedSeat.seat === seat
     );
-    
-    if (isBooked) return; // Якщо заброньоване, нічого не робимо
+    if (isBooked) return;
     
     // Перевіряємо, чи місце вже вибране
     const seatIndex = selectedSeats.findIndex(
