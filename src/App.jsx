@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Booking from './pages/Booking';
 import './index.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   return (
