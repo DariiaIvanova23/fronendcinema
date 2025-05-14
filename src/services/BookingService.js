@@ -61,25 +61,6 @@ class BookingService {
         return [];
       }
     }
-
-    deleteBooking(bookingId) {
-      try {
-        const bookings = this.getAllBookings();
-        const updatedBookings = bookings.filter(booking => booking.id !== bookingId);
-        localStorage.setItem('bookings', JSON.stringify(updatedBookings));
-        
-        return {
-          success: true,
-          message: 'Бронювання успішно видалено'
-        };
-      } catch (error) {
-        console.error(`Помилка при видаленні бронювання ${bookingId}:`, error);
-        return {
-          success: false,
-          message: 'Не вдалося видалити бронювання'
-        };
-      }
-    }
   }
 
   export default new BookingService();
